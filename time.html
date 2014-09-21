@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<style type="text/css">
+			div.wrapper {
+				margin: auto;
+				width: 900px;
+				height: 500px;
+				/*
+					border: 1px solid black;
+				*/
+				position: static;
+			}
+			
+			body {
+				position: absolute;
+				top: 50%;
+				margin-top: -250px;
+				width: 100%;
+				overflow: hidden;
+			}
+			
+			div.letterwrapper {
+				float: left;
+				position: static;
+				width: 120px;
+				margin-right: 5px;
+				margin-left: 5px;
+				height: 200px;
+			}
+			
+			div.letter {
+				width: 120px;
+				height: 200px;
+				font-size: 200px;
+				position: absolute;
+			}
+			div.letter div.top {
+				width: 120px;
+				height: 98px;
+				border: 1px solid black;
+				border-radius: 10px 10px 0 0;
+				overflow: hidden;
+				position: absolute;
+				background: white;
+			}
+			div.letter div.bottom {
+				width: 120px;
+				height: 98px;
+				border: 1px solid black;
+				border-radius: 0 0 10px 10px;
+				overflow: hidden;
+				top: 104px;
+				position: absolute;
+				background: white;
+			}
+			
+			div.letter div.bottom div.container {
+				margin-top: -118px;
+				margin-left: 10px;
+			}
+			div.letter div.top div.container {
+				margin-top: -16px;
+				margin-left: 10px;
+			}
+			div.topwrapper{
+				height: 200px;
+				position: absolute;
+				z-index: 100;
+			}
+			div.lettertop {
+				z-index: 90;
+			}
+			div.letterbottom {
+				z-index: 80;
+			}
+			div.placeholder {
+				width: 50px;
+				font-size: 200px;
+				margin-top: -30px;
+				float: left;
+			}
+		</style>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/html" id="letterproto">
+			<div class="letterwrapper">
+				<div class="lettertop letter">
+					<div class="topwrapper">
+						<div class="top"> 
+							<div class="container">
+								0
+							</div>
+						</div>
+					</div>
+					<div class="bottom"> 
+						<div class="container">
+							0
+						</div>
+					</div>
+				</div>
+				<div class="letterbottom letter">
+					<div class="top"> 
+						<div class="container">
+							0
+						</div>
+					</div>
+				</div>
+			</div>
+		</script>
+		<script>
+			var changeLetterTo = function(l) {
+				var div = this;
+				div.find(".letterbottom").find(".container").html(l);
+				var tw = div.find(".lettertop").find(".topwrapper");
+				var con = tw.find(".container");
+				tw.css({
+					"transition": "all .2s linear"
+				});
+				tw.css({
+					"transform" : "rotateX(90deg)",
+					"margin-top" : "2px"
+				});
+				setTimeout(function() {
+					con.css({
+						"transform" : "rotateX(180deg)"
+					});
+					con.html(l);
+					tw.css({
+						"transform" : "rotateX(180deg)",
+						"margin-top" : "4px"
+					});
+				}, 200);
+				setTimeout(function() {
+					div.find(".container").html(l);
+					tw.css({
+						"transition": "none"
+					});
+					tw.css({
+						"transform" : "rotateX(0)",
+						"margin-top" : "0"
+					});
+					con.css({
+						"transform" : "rotateX(0)"
+					});
+				}, 400);
+			};
+			
+			function createLetter() {
+				var div = $($("#letterproto").html()).appendTo(".wrapper");
+				div.changeLetterTo = changeLetterTo;
+				return div;
+			}
+			
+			$(function() {
+				var hours = [createLetter(), createLetter()];
+				$("<div class='placeholder'>:</div>").appendTo(".wrapper");
+				var minutes = [createLetter(), createLetter()];
+				$("<div class='placeholder'>:</div>").appendTo(".wrapper");
+				var seconds = [createLetter(), createLetter()];
+				var now = new Date();
+				var hoursInt = now.getHours();
+				var minutesInt = now.getMinutes();
+				var secondsInt = now.getSeconds();
+				function setIntToArray(i, arr) {
+					arr[0].changeLetterTo(parseInt(i / 10));
+					arr[1].changeLetterTo(i % 10);
+				}
+				setIntToArray(0, seconds);
+				setIntToArray(0, minutes);
+				setIntToArray(0, hours);
+				setTimeout(function() {
+					setIntToArray(secondsInt, seconds);
+					setIntToArray(minutesInt, minutes);
+					setIntToArray(hoursInt, hours);
+				}, 500)
+				setInterval(function() {
+					secondsInt++;
+					if(secondsInt > 59) {
+						secondsInt = 0;
+						minutesInt++;
+						if(minutesInt > 59) {
+							hoursInt++;
+							minutesInt = 0;
+							if(hoursInt > 23) {
+								hoursInt = 0;
+							}
+							setIntToArray(hoursInt, hours);
+						}
+						setIntToArray(minutesInt, minutes);
+					}
+					setIntToArray(secondsInt, seconds);
+				}, 1000);
+			});
+		</script>
+	</head>
+	<body>
+		<div class="wrapper">
+		</div>
+	</body>
+</html>
