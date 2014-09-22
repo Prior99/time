@@ -11,7 +11,7 @@
 				*/
 				position: static;
 			}
-			
+
 			body {
 				position: absolute;
 				top: 50%;
@@ -19,7 +19,7 @@
 				width: 100%;
 				overflow: hidden;
 			}
-			
+
 			div.letterwrapper {
 				float: left;
 				position: static;
@@ -28,7 +28,7 @@
 				margin-left: 5px;
 				height: 200px;
 			}
-			
+
 			div.letter {
 				width: 120px;
 				height: 200px;
@@ -54,7 +54,7 @@
 				position: absolute;
 				background: white;
 			}
-			
+
 			div.letter div.bottom div.container {
 				margin-top: -118px;
 				margin-left: 10px;
@@ -81,25 +81,25 @@
 				float: left;
 			}
 		</style>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="jquery-2.1.1.min.js"></script>
 		<script type="text/html" id="letterproto">
 			<div class="letterwrapper">
 				<div class="lettertop letter">
 					<div class="topwrapper">
-						<div class="top"> 
+						<div class="top">
 							<div class="container">
 								0
 							</div>
 						</div>
 					</div>
-					<div class="bottom"> 
+					<div class="bottom">
 						<div class="container">
 							0
 						</div>
 					</div>
 				</div>
 				<div class="letterbottom letter">
-					<div class="top"> 
+					<div class="top">
 						<div class="container">
 							0
 						</div>
@@ -144,13 +144,13 @@
 					});
 				}, 400);
 			};
-			
+
 			function createLetter() {
 				var div = $($("#letterproto").html()).appendTo(".wrapper");
 				div.changeLetterTo = changeLetterTo;
 				return div;
 			}
-			
+
 			$(function() {
 				var hours = [createLetter(), createLetter()];
 				$("<div class='placeholder'>:</div>").appendTo(".wrapper");
@@ -161,20 +161,24 @@
 				var hoursInt = now.getHours();
 				var minutesInt = now.getMinutes();
 				var secondsInt = now.getSeconds();
-				function setIntToArray(i, arr) {
-					arr[0].changeLetterTo(parseInt(i / 10));
+				function setIntToArray(i, arr, f) {
+					if(i %10 == 0 || f) {
+						arr[0].changeLetterTo(parseInt(i / 10));
+					}
 					arr[1].changeLetterTo(i % 10);
 				}
-				setIntToArray(0, seconds);
-				setIntToArray(0, minutes);
-				setIntToArray(0, hours);
+				setIntToArray(0, seconds, true);
+				setIntToArray(0, minutes, true);
+				setIntToArray(0, hours, true);
 				setTimeout(function() {
-					setIntToArray(secondsInt, seconds);
-					setIntToArray(minutesInt, minutes);
-					setIntToArray(hoursInt, hours);
-				}, 500)
+					setIntToArray(secondsInt, seconds, true);
+					setIntToArray(minutesInt, minutes, true);
+					setIntToArray(hoursInt, hours, true);
+				}, 500);
+				var now = Date.now();
 				setInterval(function() {
-					secondsInt++;
+					secondsInt += (Date.now() - now)/1000;
+					now = Date.now();
 					if(secondsInt > 59) {
 						secondsInt = 0;
 						minutesInt++;
