@@ -204,22 +204,23 @@
 
 				setTimeout(startAnimation,1000);
 				function startAnimation() {
+					now = new Date();
 					if(secondsInt < now.getSeconds()) {
 						secondsInt++;
 						setIntToArray(secondsInt, seconds, false, .08);
 					}
-					if(minutesInt < now.getMinutes()) {
+					if(minutesInt < now.getMinutes() -1) {
 						minutesInt++;
 						setIntToArray(minutesInt, minutes, false, .08);
 					}
-					if(hoursInt < now.getHours()) {
+					if(hoursInt < now.getHours() -1) {
 						hoursInt++;
 						setIntToArray(hoursInt, hours, false, .08);
 					}
-					if(secondsInt < now.getSeconds() || minutesInt < now.getMinutes() || hoursInt < now.getHours()) {
+					if(secondsInt < now.getSeconds() || minutesInt < now.getMinutes() -1 || hoursInt < now.getHours() -1) {
 						setTimeout(startAnimation, 100);
 					}
-					else displayTime();
+					else setTimeout(displayTime, 100);
 				}
 				function displayTime() {
 					setInterval(function() {
