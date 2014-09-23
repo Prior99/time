@@ -1,23 +1,50 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="bebasneue/stylesheet.css" />
 		<style type="text/css">
 			div.wrapper {
 				margin: auto;
 				width: 900px;
-				height: 500px;
+				height: 200px;
+				padding: 10px;
 				/*
 					border: 1px solid black;
 				*/
 				position: static;
 			}
 
+			div.outer {
+				background: #666;
+				width: 100%;
+				height: 200px;
+				padding: 20px;
+				padding-bottom: 40px;
+				box-shadow:	0px 2px 5px 0px black;
+				background: url('tweed.png');
+			}
+
 			body {
+				background: url('black-Linen.png');
 				position: absolute;
 				top: 50%;
 				margin-top: -250px;
 				width: 100%;
 				overflow: hidden;
+				font-family: "bebas_neueregular";
+				color: white;
+			}
+			div.footer {
+				width: 100%;
+				color: #555;
+				text-align: center;
+				margin-top: 10px;
+			}
+			div.topper {
+				width: 100%;
+				color: #555;
+				text-align: center;
+				margin-top: 10px;
 			}
 
 			div.letterwrapper {
@@ -27,6 +54,7 @@
 				margin-right: 5px;
 				margin-left: 5px;
 				height: 200px;
+				display: block;
 			}
 
 			div.letter {
@@ -35,33 +63,35 @@
 				font-size: 200px;
 				position: absolute;
 			}
-			div.letter div.top {
-				width: 120px;
-				height: 98px;
-				border: 1px solid black;
-				border-radius: 10px 10px 0 0;
+			div.letter div.top,
+			div.letter div.bottom {
+				width: 118px;
+				height: 97px;
 				overflow: hidden;
 				position: absolute;
-				background: white;
+				background: #222;
+				box-shadow:	0px 2px 5px 0px black;
+				border: 1px solid #444;
+			}
+			div.letter div.top {
+				border-radius: 10px 10px 0 0;
+			}
+
+			div.topwrapper div.top {
+				box-shadow: none;
 			}
 			div.letter div.bottom {
-				width: 120px;
-				height: 98px;
-				border: 1px solid black;
 				border-radius: 0 0 10px 10px;
-				overflow: hidden;
-				top: 104px;
-				position: absolute;
-				background: white;
+				top: 100px;
 			}
 
 			div.letter div.bottom div.container {
-				margin-top: -118px;
-				margin-left: 10px;
+				margin-top: -108px;
+				margin-left: 20px;
 			}
 			div.letter div.top div.container {
-				margin-top: -16px;
-				margin-left: 10px;
+				margin-top: -8px;
+				margin-left: 20px;
 			}
 			div.topwrapper{
 				height: 200px;
@@ -76,9 +106,9 @@
 			}
 			div.placeholder {
 				width: 50px;
-				font-size: 200px;
-				margin-top: -30px;
+				display: block;
 				float: left;
+				height: 200px;
 			}
 		</style>
 		<script src="jquery-2.1.1.min.js"></script>
@@ -108,28 +138,29 @@
 			</div>
 		</script>
 		<script>
-			var changeLetterTo = function(l) {
+			var changeLetterTo = function(l, speed) {
+				if(!speed) speed = 0.9;
 				var div = this;
 				div.find(".letterbottom").find(".container").html(l);
 				var tw = div.find(".lettertop").find(".topwrapper");
 				var con = tw.find(".container");
 				tw.css({
-					"transition": "all .2s linear"
+					"transition": "all " + (speed / 2) + "s linear"
 				});
 				tw.css({
-					"transform" : "rotateX(90deg)",
-					"margin-top" : "2px"
+					"transform" : "rotateX(90deg)"
 				});
 				setTimeout(function() {
 					con.css({
-						"transform" : "rotateX(180deg)"
+						"transform" : "rotateX(180deg)",
+						"margin-top" : "-14px"
 					});
 					con.html(l);
 					tw.css({
+						"margin-top" : "-.5px",
 						"transform" : "rotateX(180deg)",
-						"margin-top" : "4px"
 					});
-				}, 200);
+				}, (speed / 2) * 1000);
 				setTimeout(function() {
 					div.find(".container").html(l);
 					tw.css({
@@ -140,9 +171,10 @@
 						"margin-top" : "0"
 					});
 					con.css({
-						"transform" : "rotateX(0)"
+						"transform" : "rotateX(0)",
+						"margin-top" : "-8px"
 					});
-				}, 400);
+				}, speed * 1000);
 			};
 
 			function createLetter() {
@@ -153,9 +185,9 @@
 
 			$(function() {
 				var hours = [createLetter(), createLetter()];
-				$("<div class='placeholder'>:</div>").appendTo(".wrapper");
+				$("<div class='placeholder'></div>").appendTo(".wrapper");
 				var minutes = [createLetter(), createLetter()];
-				$("<div class='placeholder'>:</div>").appendTo(".wrapper");
+				$("<div class='placeholder'></div>").appendTo(".wrapper");
 				var seconds = [createLetter(), createLetter()];
 				var now = new Date();
 				var hoursInt = now.getHours();
@@ -177,7 +209,7 @@
 				}, 500);
 				var now = Date.now();
 				setInterval(function() {
-					secondsInt += (Date.now() - now)/1000;
+					secondsInt += parseInt((Date.now() - now)/1000);
 					now = Date.now();
 					if(secondsInt > 59) {
 						secondsInt = 0;
@@ -198,7 +230,12 @@
 		</script>
 	</head>
 	<body>
-		<div class="wrapper">
+		<div class="outer">
+			<div class="wrapper">
+			</div>
+		</div>
+		<div class="footer">
+			2014 by Frederick Gnodtke
 		</div>
 	</body>
 </html>
