@@ -3,6 +3,10 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="bebasneue/stylesheet.css" />
 		<style type="text/css">
+		/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+			html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+		</style>
+		<style type="text/css">
 			div.wrapper {
 				margin: auto;
 				width: 900px;
@@ -28,11 +32,13 @@
 				background: url('black-Linen.png');
 				position: absolute;
 				top: 50%;
+				margin: 0;
 				margin-top: -250px;
 				width: 100%;
 				overflow: hidden;
 				font-family: "bebas_neueregular";
 				color: white;
+				padding: 0;
 			}
 			div.footer {
 				width: 100%;
@@ -85,13 +91,16 @@
 				top: 100px;
 			}
 
+			div.container {
+				left: 20px;
+				position: absolute;
+			}
+
 			div.letter div.bottom div.container {
-				margin-top: -108px;
-				margin-left: 20px;
+				top: -100px;
 			}
 			div.letter div.top div.container {
-				margin-top: -8px;
-				margin-left: 20px;
+				top: 0px;
 			}
 			div.topwrapper{
 				height: 200px;
@@ -111,6 +120,7 @@
 				height: 200px;
 			}
 		</style>
+
 		<script src="jquery-2.1.1.min.js"></script>
 		<script type="text/html" id="letterproto">
 			<div class="letterwrapper">
@@ -152,12 +162,11 @@
 				});
 				setTimeout(function() {
 					con.css({
-						"transform" : "rotateX(180deg)",
-						"margin-top" : "-14px"
+						"transform" : "rotateX(180deg) translate(0, 3px)"
 					});
 					con.html(l);
 					tw.css({
-						"margin-top" : "-.5px",
+						"top" : "-.5px",
 						"transform" : "rotateX(180deg)",
 					});
 				}, (speed / 2) * 1000);
@@ -168,11 +177,10 @@
 					});
 					tw.css({
 						"transform" : "rotateX(0)",
-						"margin-top" : "0"
+						"top" : "0"
 					});
 					con.css({
-						"transform" : "rotateX(0)",
-						"margin-top" : "-8px"
+						"transform" : "rotateX(0) translate(0, 0)"
 					});
 				}, speed * 1000);
 			};
