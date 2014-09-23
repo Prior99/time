@@ -189,43 +189,58 @@
 				var minutes = [createLetter(), createLetter()];
 				$("<div class='placeholder'></div>").appendTo(".wrapper");
 				var seconds = [createLetter(), createLetter()];
+
 				var now = new Date();
-				var hoursInt = now.getHours();
-				var minutesInt = now.getMinutes();
-				var secondsInt = now.getSeconds();
-				function setIntToArray(i, arr, f) {
+				var hoursInt = 0;
+				var minutesInt = 0;
+				var secondsInt = 0;
+
+				function setIntToArray(i, arr, f, t) {
 					if(i %10 == 0 || f) {
-						arr[0].changeLetterTo(parseInt(i / 10));
+						arr[0].changeLetterTo(parseInt(i / 10), t);
 					}
-					arr[1].changeLetterTo(i % 10);
+					arr[1].changeLetterTo(i % 10, t);
 				}
-				setIntToArray(0, seconds, true);
-				setIntToArray(0, minutes, true);
-				setIntToArray(0, hours, true);
-				setTimeout(function() {
-					setIntToArray(secondsInt, seconds, true);
-					setIntToArray(minutesInt, minutes, true);
-					setIntToArray(hoursInt, hours, true);
-				}, 500);
-				var now = Date.now();
-				setInterval(function() {
-					secondsInt += parseInt((Date.now() - now)/1000);
-					now = Date.now();
-					if(secondsInt > 59) {
-						secondsInt = 0;
-						minutesInt++;
-						if(minutesInt > 59) {
-							hoursInt++;
-							minutesInt = 0;
-							if(hoursInt > 23) {
-								hoursInt = 0;
-							}
-							setIntToArray(hoursInt, hours);
-						}
-						setIntToArray(minutesInt, minutes);
+
+				setTimeout(startAnimation,1000);
+				function startAnimation() {
+					if(secondsInt < now.getSeconds()) {
+						secondsInt++;
+						setIntToArray(secondsInt, seconds, false, .08);
 					}
-					setIntToArray(secondsInt, seconds);
-				}, 1000);
+					if(minutesInt < now.getMinutes()) {
+						minutesInt++;
+						setIntToArray(minutesInt, minutes, false, .08);
+					}
+					if(hoursInt < now.getHours()) {
+						hoursInt++;
+						setIntToArray(hoursInt, hours, false, .08);
+					}
+					if(secondsInt < now.getSeconds() || minutesInt < now.getMinutes() || hoursInt < now.getHours()) {
+						setTimeout(startAnimation, 100);
+					}
+					else displayTime();
+				}
+				function displayTime() {
+					setInterval(function() {
+						secondsInt += parseInt((Date.now() - now)/1000);
+						now = Date.now();
+						if(secondsInt > 59) {
+							secondsInt = 0;
+							minutesInt++;
+							if(minutesInt > 59) {
+								hoursInt++;
+								minutesInt = 0;
+								if(hoursInt > 23) {
+									hoursInt = 0;
+								}
+								setIntToArray(hoursInt, hours);
+							}
+							setIntToArray(minutesInt, minutes);
+						}
+						setIntToArray(secondsInt, seconds);
+					}, 1000);
+				}
 			});
 		</script>
 	</head>
